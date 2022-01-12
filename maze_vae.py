@@ -51,8 +51,8 @@ class VAE(keras.Model):
             kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
             kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
             total_loss = reconstruction_loss + kl_loss
-        #grads = tape.gradient(total_loss, self.trainable_weights)
-        #self.optimizer.apply_gradients(zip(grads, self.trainable_weights))
+        # grads = tape.gradient(total_loss, self.trainable_weights)
+        # self.optimizer.apply_gradients(zip(grads, self.trainable_weights))
         self.total_loss_tracker.update_state(total_loss)
         self.reconstruction_loss_tracker.update_state(reconstruction_loss)
         self.kl_loss_tracker.update_state(kl_loss)
@@ -73,7 +73,7 @@ def read_images(dir):
     return np.asarray(out)
 
 
-def pred_to_image(pred: np.ndarray):
+def sample_to_image(pred: np.ndarray):
     o = pred.copy()
     o[o>0.8] = 255
     o[o<=0.8] = 0
@@ -84,9 +84,9 @@ def pred_to_image(pred: np.ndarray):
     imageio.imsave("output.gif", im)
 
 
-def plot_latent_space(decoder, digit_size=28, n=30, scale=15):
+def plot_latent_space(decoder, maze_size=28, n=30, scale=15):
     # display a n*n 2D manifold of mazes
-    figure = np.zeros((digit_size * n, digit_size * n))
+    figure = np.zeros((maze_size * n, maze_size * n))
     # We will sample n points within [-scale, scale] standard deviations
     grid_x = np.linspace(-scale, scale, n)
     grid_y = np.linspace(-scale, scale, n)
@@ -95,16 +95,16 @@ def plot_latent_space(decoder, digit_size=28, n=30, scale=15):
         for j, xi in enumerate(grid_y):
             z_sample = np.array([[xi, yi]])
             x_decoded = decoder.predict(z_sample)
-            digit = x_decoded[0].reshape(digit_size, digit_size)
-            figure[i * digit_size: (i + 1) * digit_size,
-                j * digit_size: (j + 1) * digit_size] = digit
+            digit = x_decoded[0].reshape(maze_size, maze_size)
+            figure[i * maze_size: (i + 1) * maze_size,
+                j * maze_size: (j + 1) * maze_size] = digit
 
-    plt.figure(figsize=(digit_size, digit_size))
+    plt.figure(figsize=(maze_size, maze_size))
     plt.imshow(figure)
     plt.show()
    
 
-def get_prediction(decoder, digit_size, n=30, scale = 1.0):
+def get_prediction(decoder, maze_size, n=30, scale = 1.0):
 
     # get a point in latent space, to be decoded
     grid_x = np.linspace(-scale, scale, n)
@@ -115,7 +115,7 @@ def get_prediction(decoder, digit_size, n=30, scale = 1.0):
 
     z_sample = np.array([[xi, yi]])
     x_decoded = decoder.predict(z_sample)
-    digit = x_decoded[0].reshape(digit_size, digit_size)
+    digit = x_decoded[0].reshape(maze_size, maze_size)
     return digit
 
 def main():
@@ -179,11 +179,11 @@ def main():
     # vae.fit(x_train, x_train,  epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])
     vae.load_weights(checkpoint_filepath)
     scale = 100
-    plot_latent_space(decoder, digit_size = size, n=8, scale=scale)
+    plot_latent_space(decoder, maze_size = size, n=8, scale=scale)
 
-    pred = get_prediction(decoder, digit_size=size, n=8, scale=scale)
+    pred = get_prediction(decoder, maze_size=size, n=8, scale=scale)
     print(pred)
-    pred_to_image(pred)
+    sample_to_image(pred)
     
 
 if __name__ == '__main__':
