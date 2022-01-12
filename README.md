@@ -18,6 +18,7 @@ Maze generation with Variational Autoencoders
 **Loading weights without retraining**
 
 Comment the line:
+
 `vae.fit(x_train, x_train, epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])`
 
 **Notes**
