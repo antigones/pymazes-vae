@@ -13,7 +13,7 @@ Maze generation with Variational Autoencoders
 4) Train the variational autoencoder:
 `python maze_vae.py`
 
-5) By default, the script plots samples from the latent space and print one random sample to output.gif
+5) By default, the script plots samples from the latent space and prints one random sample to output.gif
 
 **Loading weights without retraining**
 
