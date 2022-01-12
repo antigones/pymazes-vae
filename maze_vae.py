@@ -14,7 +14,6 @@ class Sampling(layers.Layer):
         z_mean, z_log_var = inputs
         batch = tf.shape(z_mean)[0]
         dim = tf.shape(z_mean)[1]
-
         epsilon = tf.keras.backend.random_normal(shape=(batch, dim))
         return z_mean + tf.exp(0.5 * z_log_var) * epsilon
 
@@ -176,7 +175,7 @@ def main():
         mode='auto',
         save_best_only=True)
 
-    # vae.fit(x_train, x_train,  epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])
+    vae.fit(x_train, x_train,  epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])
     vae.load_weights(checkpoint_filepath)
     scale = 100
     plot_latent_space(decoder, maze_size = size, n=8, scale=scale)
