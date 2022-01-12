@@ -94,9 +94,9 @@ def plot_latent_space(decoder, maze_size=28, n=30, scale=15):
         for j, xi in enumerate(grid_y):
             z_sample = np.array([[xi, yi]])
             x_decoded = decoder.predict(z_sample)
-            digit = x_decoded[0].reshape(maze_size, maze_size)
+            maze = x_decoded[0].reshape(maze_size, maze_size)
             figure[i * maze_size: (i + 1) * maze_size,
-                j * maze_size: (j + 1) * maze_size] = digit
+                j * maze_size: (j + 1) * maze_size] = maze
 
     plt.figure(figsize=(maze_size, maze_size))
     plt.imshow(figure)
@@ -114,8 +114,8 @@ def get_prediction(decoder, maze_size, n=30, scale = 1.0):
 
     z_sample = np.array([[xi, yi]])
     x_decoded = decoder.predict(z_sample)
-    digit = x_decoded[0].reshape(maze_size, maze_size)
-    return digit
+    maze = x_decoded[0].reshape(maze_size, maze_size)
+    return maze
 
 def main():
 
