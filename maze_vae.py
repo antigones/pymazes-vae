@@ -183,12 +183,12 @@ def main():
         mode='auto',
         save_best_only=True)
 
-    history = vae.fit(x_train, x_train,  epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])
-    plot_history(history)
+    # history = vae.fit(x_train, x_train,  epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])
+    # plot_history(history)
     
     vae.load_weights(checkpoint_filepath)
     scale = 100
-    plot_latent_space(decoder, maze_size = size, n=8, scale=scale)
+    # plot_latent_space(decoder, maze_size = size, n=8, scale=scale)
 
     pred = get_prediction(decoder, maze_size=size, n=8, scale=scale)
     print(pred)
