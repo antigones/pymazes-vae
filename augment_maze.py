@@ -35,7 +35,6 @@ def main():
         output = maze_utils.carve_maze(grid, size)
         save_output_image(i, output, train_dir)
         
-        
     for i in range(n_samples//3):
         grid = np.random.binomial(n,p, size=(size,size))
         grid = maze_utils.preprocess_grid(grid, size)

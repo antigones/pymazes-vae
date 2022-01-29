@@ -117,11 +117,19 @@ def get_prediction(decoder, maze_size, n=30, scale = 1.0):
     maze = x_decoded[0].reshape(maze_size, maze_size)
     return maze
 
+def plot_history(history):
+    print(history.history.keys())
+    plt.plot(history.history['loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
+
 def main():
 
     # build the encoder
-    
-    # size = 28
+
     size = 36*3 # maze edge * 3
     original_dim = size * size
     intermediate_dim = 64
@@ -175,7 +183,9 @@ def main():
         mode='auto',
         save_best_only=True)
 
-    vae.fit(x_train, x_train,  epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])
+    history = vae.fit(x_train, x_train,  epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])
+    plot_history(history)
+    
     vae.load_weights(checkpoint_filepath)
     scale = 100
     plot_latent_space(decoder, maze_size = size, n=8, scale=scale)
