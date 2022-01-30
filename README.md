@@ -19,7 +19,12 @@ Maze generation with Variational Autoencoders
 
 Comment the line:
 
-`vae.fit(x_train, x_train, epochs=300, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')])`
+`history = vae.fit(x_train, x_train, epochs=5000, batch_size=128, callbacks=[model_checkpoint_callback, tf.keras.callbacks.EarlyStopping(patience=10, monitor='loss')], validation_data=(x_test, x_test))
+`
+
+and the line:
+
+`plot_history(history)`
 
 **Notes**
 
